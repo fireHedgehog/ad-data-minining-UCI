@@ -43,9 +43,9 @@ X_train, X_test, y_train, y_test = train_test_split(x, y, train_size=0.7)
 classifier = DecisionTreeClassifier()
 classifier = classifier.fit(X_train, y_train)
 
-scores_test = classifier.score(X_test, y_test)
 y_pre_test = classifier.predict(X_test)
-
+# cross validation to improve my model
+scores_test = classifier.score(X_test, y_test)
 print("\nTest Accuracy: {0:.1f}%".format(np.mean(scores_test) * 100))
 
 # print("\ntest Predication: \n", y_pre_test)
@@ -58,4 +58,4 @@ print(classification_report(y_test, y_pre_test))
 sns.heatmap(matrix, annot=True, cmap="YlGnBu")
 plt.show()
 
-print("Accuracy score of Decision Tree:", accuracy_score(y_test, y_pre_test))
+# print("Accuracy score of Decision Tree:", accuracy_score(y_test, y_pre_test))
