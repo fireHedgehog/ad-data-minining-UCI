@@ -10,6 +10,8 @@ ad_dataFrame = ad_dataFrame.dropna()
 
 # print first 10 columns to preview the data
 print(ad_dataFrame.head(10))
+# print the type
+print(type(ad_dataFrame.head(2).values[1, 1]))
 
 # statistically describe it
 # comment it out once we get the csv file. since it is too slow to calculate
@@ -29,7 +31,7 @@ fig = plt.figure(1, figsize=(16, 9))
 ax = fig.add_subplot(111)
 # get the box plot of width and height
 box_data = ad_dataFrame[['height', 'width']].values
-print(box_data)
+box_data = box_data.astype(int)
 ax.boxplot(box_data, notch='True', patch_artist=True)
 ax.set_xticklabels(['height', 'width'])
 plt.show()
