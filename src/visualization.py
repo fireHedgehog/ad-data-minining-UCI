@@ -46,15 +46,15 @@ missing_to_mean[['height', 'width', 'aratio', 'local']] = replace_missing(missin
 values = missing_to_mean.values
 
 # ------------------------------------------------------------------------------------------
-statistic_data = missing_to_mean.values[:, 0:1558].astype(float)
-describe = DataFrame(statistic_data).describe()
-print(describe)
-describe.to_csv('../export/ad_data_describe_2.csv', encoding='utf-8')
-n_row, n_column = missing_to_mean.shape
-print(n_row, n_column)
-print("\n correlation Matrix : ")
-print(describe.corr())
-describe.corr().to_csv('../export/ad_data_correlation_matrix_2.csv', encoding='utf-8')
+# statistic_data = missing_to_mean.values[:, 0:1558].astype(float)
+# describe = DataFrame(statistic_data).describe()
+# print(describe)
+# describe.to_csv('../export/ad_data_describe_2.csv', encoding='utf-8')
+# n_row, n_column = missing_to_mean.shape
+# print(n_row, n_column)
+# print("\n correlation Matrix : ")
+# print(describe.corr())
+# describe.corr().to_csv('../export/ad_data_correlation_matrix_2.csv', encoding='utf-8')
 # ------------------------------------------------------------------------------------------
 
 
