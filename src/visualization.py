@@ -40,8 +40,24 @@ print(type(ad_dataFrame.head(2).values[1, 1]))
 
 # replace missing value with mean
 # only visualize first 4 columns because they are not nominal
-ad_missing_with_mean = replace_missing(dataFrame.iloc[:, [0, 1, 2, 3]].copy())
-values = ad_missing_with_mean.values
+missing_to_mean = dataFrame
+# 'height' 'width' 'aratio' 'local'
+missing_to_mean[['height', 'width', 'aratio', 'local']] = replace_missing(missing_to_mean.iloc[:, [0, 1, 2, 3]].copy())
+values = missing_to_mean.values
+
+# ------------------------------------------------------------------------------------------
+statistic_data = missing_to_mean.values[:, 0:1558].astype(float)
+describe = DataFrame(statistic_data).describe()
+print(describe)
+describe.to_csv('../export/ad_data_describe_2.csv', encoding='utf-8')
+n_row, n_column = missing_to_mean.shape
+print(n_row, n_column)
+print("\n correlation Matrix : ")
+print(describe.corr())
+describe.corr().to_csv('../export/ad_data_correlation_matrix_2.csv', encoding='utf-8')
+# ------------------------------------------------------------------------------------------
+
+
 # print(values)
 
 # we can print box plot
@@ -53,50 +69,70 @@ values = ad_missing_with_mean.values
 # plt.show()
 
 # we can print distplot
-# fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(nrows=2, ncols=2)
-# fig.set_figheight(9)
-# fig.set_figwidth(16)
-# sns.distplot(ad_missing_with_mean['height'], ax=ax1)
-# sns.distplot(ad_missing_with_mean['width'], ax=ax2)
-# sns.distplot(ad_missing_with_mean['aratio'], ax=ax3)
-# sns.distplot(ad_missing_with_mean['local'], ax=ax4)
+fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(nrows=2, ncols=2)
+fig.set_figheight(9)
+fig.set_figwidth(16)
+sns.distplot(missing_to_mean['height'], ax=ax1) # 'height' 'width' 'aratio' 'local'
+sns.distplot(missing_to_mean['width'], ax=ax2)
+sns.distplot(missing_to_mean['aratio'], ax=ax3)
+sns.distplot(missing_to_mean['local'], ax=ax4)
 
-## g = sns.pairplot(data=ad_dataFrame.iloc[1:, [0, 1, 2, 3, 1558]], hue="class", markers=["o", "s"])
-# g = sns.pairplot(data=ad_dataFrame.iloc[1:, [0, 1, 2, 3, 1558]])
-# g.axes[0, 0].set_yticks([])
-# g.axes[0, 0].set_xticks([])
-# g.axes[0, 1].set_yticks([])
-# g.axes[0, 1].set_xticks([])
-# g.axes[0, 2].set_yticks([])
-# g.axes[0, 2].set_xticks([])
-# g.axes[0, 3].set_yticks([])
-# g.axes[0, 3].set_xticks([])
-#
-# g.axes[1, 0].set_yticks([])
-# g.axes[1, 0].set_xticks([])
-# g.axes[1, 1].set_yticks([])
-# g.axes[1, 1].set_xticks([])
-# g.axes[1, 2].set_yticks([])
-# g.axes[1, 2].set_xticks([])
-# g.axes[1, 3].set_yticks([])
-# g.axes[1, 3].set_xticks([])
-#
-# g.axes[2, 0].set_yticks([])
-# g.axes[2, 0].set_xticks([])
-# g.axes[2, 1].set_yticks([])
-# g.axes[2, 1].set_xticks([])
-# g.axes[2, 2].set_yticks([])
-# g.axes[2, 2].set_xticks([])
-# g.axes[2, 3].set_yticks([])
-# g.axes[2, 3].set_xticks([])
-#
-# g.axes[3, 0].set_yticks([])
-# g.axes[3, 0].set_xticks([])
-# g.axes[3, 1].set_yticks([])
-# g.axes[3, 1].set_xticks([])
-# g.axes[3, 2].set_yticks([])
-# g.axes[3, 2].set_xticks([])
-# g.axes[3, 3].set_yticks([])
-# g.axes[3, 3].set_xticks([])
+## g = sns.pairplot(data=missing_to_mean.iloc[1:, [0, 1, 2, 3, 1558]], hue="class", markers=["o", "s"])
+g = sns.pairplot(data=missing_to_mean.iloc[1:, [0, 1, 2, 3, 1558]])
+g.axes[0, 0].set_yticks([])
+g.axes[0, 0].set_xticks([])
+g.axes[0, 1].set_yticks([])
+g.axes[0, 1].set_xticks([])
+g.axes[0, 2].set_yticks([])
+g.axes[0, 2].set_xticks([])
+g.axes[0, 3].set_yticks([])
+g.axes[0, 3].set_xticks([])
+
+g.axes[1, 0].set_yticks([])
+g.axes[1, 0].set_xticks([])
+g.axes[1, 1].set_yticks([])
+g.axes[1, 1].set_xticks([])
+g.axes[1, 2].set_yticks([])
+g.axes[1, 2].set_xticks([])
+g.axes[1, 3].set_yticks([])
+g.axes[1, 3].set_xticks([])
+
+g.axes[2, 0].set_yticks([])
+g.axes[2, 0].set_xticks([])
+g.axes[2, 1].set_yticks([])
+g.axes[2, 1].set_xticks([])
+g.axes[2, 2].set_yticks([])
+g.axes[2, 2].set_xticks([])
+g.axes[2, 3].set_yticks([])
+g.axes[2, 3].set_xticks([])
+
+g.axes[3, 0].set_yticks([])
+g.axes[3, 0].set_xticks([])
+g.axes[3, 1].set_yticks([])
+g.axes[3, 1].set_xticks([])
+g.axes[3, 2].set_yticks([])
+g.axes[3, 2].set_xticks([])
+g.axes[3, 3].set_yticks([])
+g.axes[3, 3].set_xticks([])
+
+fig, ax = plt.subplots(nrows=3, ncols=1)
+fig.set_figheight(9)
+fig.set_figwidth(16)
+
+g = sns.stripplot(y='class', x='height', data=missing_to_mean, ax=ax[0])
+g1 = sns.stripplot(y='class', x='width', data=missing_to_mean, ax=ax[1])
+g2 = sns.stripplot(y='class', x='aratio', data=missing_to_mean, ax=ax[2])
+g.set_xticks(np.arange(0, 700, step=100))
+g1.set_xticks(np.arange(0, 700, step=100))
+g2.set_xticks(np.arange(0, 70, step=10))
+
+sns.countplot(data=missing_to_mean, y='class', palette='Set2')
+
+fig, ax = plt.subplots(nrows=1, ncols=2)
+fig.set_figheight(12)
+fig.set_figwidth(16)
+
+sns.boxplot(x='class', y="height", data=missing_to_mean, ax=ax[0])
+sns.boxplot(x='class', y="width", data=missing_to_mean, ax=ax[1])
 
 plt.show()
