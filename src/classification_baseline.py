@@ -136,11 +136,16 @@ def feature_selection_method(x, y, method=''):
         plt.show()
 
         selected = fit.transform(x)
-        selected.to_csv('../export/select_RFE.csv', encoding='utf-8')
+        DataFrame(selected).to_csv('../export/select_RFE.csv', encoding='utf-8')
         print(selected)
 
         return selected
 
+    elif method == 'univariate':
+
+        return x
+
+    return x
 
 def plot_bar_for_best_k(label, values):
     # this is for plotting purpose
@@ -158,8 +163,8 @@ X, Y = replace_missing_value()
 
 # X_train, X_test, Y_train, Y_test = train_test_split(X, Y, train_size=0.66)
 
-x_selected = feature_selection_method(X, Y, "rfe")
+x_selected = feature_selection_method(X, Y, "univariate")
 
 X_train, X_test, Y_train, Y_test = train_test_split(x_selected, Y, train_size=0.66)
 
-# classify_by_x_y(X_train, X_test, Y_train, Y_test)
+classify_by_x_y(X_train, X_test, Y_train, Y_test)
