@@ -116,8 +116,7 @@ g.axes[3, 3].set_yticks([])
 g.axes[3, 3].set_xticks([])
 
 fig, ax = plt.subplots(nrows=3, ncols=1)
-fig.set_figheight(9)
-fig.set_figwidth(16)
+
 
 g = sns.stripplot(y='class', x='height', data=missing_to_mean, ax=ax[0])
 g1 = sns.stripplot(y='class', x='width', data=missing_to_mean, ax=ax[1])

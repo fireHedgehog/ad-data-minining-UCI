@@ -12,23 +12,25 @@ from sklearn.svm import SVC
 import numpy as np
 from sklearn.feature_selection import SelectKBest, RFECV, chi2
 import matplotlib.pyplot as plt
+from imblearn.over_sampling import RandomOverSampler, ADASYN, SMOTE
 from sklearn.neural_network import MLPClassifier
 import seaborn as sns
+from collections import Counter
 
 
 def classify_by_x_y(x_train, x_test, y_train, y_test):
     models = [
-        ('Logistic Regression ', LogisticRegression(solver='lbfgs')),
-        ('GaussianNB', GaussianNB()),
-        # n_neighbors=5
-        ('K-Neighbors Classifier', KNeighborsClassifier()),
-        ('Support Vector Machine', SVC(gamma=2, C=1)),
-        ('Support Vector Machine Linear', SVC(kernel="linear", C=0.025)),
-        # criterion='entropy', max_depth=150, min_samples_split=3
-        ('Decision Tree Classifier', DecisionTreeClassifier()),
-        # n_estimators=60
-        ('Random Forest Classifier', RandomForestClassifier(n_estimators=10)),
-        # ('Multilayer Perceptron', MLPClassifier(solver='lbfgs', alpha=1e-5, hidden_layer_sizes=(5, 2)))
+        # ('Logistic Regression ', LogisticRegression(solver='lbfgs')),
+        # ('GaussianNB', GaussianNB()),
+        # # n_neighbors=5
+        # ('K-Neighbors Classifier', KNeighborsClassifier()),
+        # ('Support Vector Machine', SVC(gamma=2, C=1)),
+        # ('Support Vector Machine Linear', SVC(kernel="linear", C=0.025)),
+        # # criterion='entropy', max_depth=150, min_samples_split=3
+        # ('Decision Tree Classifier', DecisionTreeClassifier()),
+        # # n_estimators=60
+        # ('Random Forest Classifier', RandomForestClassifier(n_estimators=10)),
+        ('Multilayer Perceptron', MLPClassifier())
     ]
 
     for name, model in models:
@@ -147,6 +149,7 @@ def feature_selection_method(x, y, method=''):
 
     return x
 
+
 def plot_bar_for_best_k(label, values):
     # this is for plotting purpose
     print(label, values)
@@ -159,12 +162,37 @@ def plot_bar_for_best_k(label, values):
     plt.show()
 
 
+def rebalancing(x, y, sampler):
+    rus = sampler
+    X_resampled, y_resampled = rus.fit_sample(x, y)
+
+    df = DataFrame(y_resampled)
+    df.columns = ["class"]
+
+    df2 = DataFrame(y.values)
+    df2.columns = ["class"]
+
+    # f, (ax1, ax2) = plt.subplots(nrows=1, ncols=2)
+    # ax1.set_title(" Original Dataset: ")
+    # ax2.set_title(" Rebalanced Dataset: ")
+    # sns.countplot(data=df2, y='class', palette='Set2', ax=ax1)
+    # sns.countplot(data=df, y='class', palette='Set2', ax=ax2)
+    # plt.show()
+
+    print('Original dataset shape %s' % Counter(y))
+    print('Resampled dataset shape %s' % Counter(y_resampled))
+
+    return X_resampled, y_resampled
+
+
 X, Y = replace_missing_value()
 
 # X_train, X_test, Y_train, Y_test = train_test_split(X, Y, train_size=0.66)
-
-x_selected = feature_selection_method(X, Y, "univariate")
+x_selected = feature_selection_method(X, Y, "SelectKBest")
 
 X_train, X_test, Y_train, Y_test = train_test_split(x_selected, Y, train_size=0.66)
 
-classify_by_x_y(X_train, X_test, Y_train, Y_test)
+# RandomOverSampler(return_indices=True)    # SMOTE()    #ADASYN()
+X_resampled, y_resampled = rebalancing(X_train, Y_train, SMOTE())
+
+classify_by_x_y(X_resampled, X_test, y_resampled, Y_test)
