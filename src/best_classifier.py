@@ -9,6 +9,7 @@ from imblearn.over_sampling import SMOTE
 from collections import Counter
 import matplotlib.pylab as plt
 import seaborn as sns
+import pandas as pd
 
 
 def classify_by_x_y(x, y):
@@ -31,8 +32,18 @@ def classify_by_x_y(x, y):
     print(classification_report(y, y_pred))
     print("\n Accuracy score: \n", accuracy_score(y_true=y, y_pred=y_pred))
     print("\n matrix: \n", matrix)
+
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
     sns.heatmap(matrix, annot=True, cmap="YlGnBu")
+    ax.set_xlabel('Predicted labels')
+    ax.set_ylabel('True labels')
+    ax.set_title('Confusion Matrix')
+    ax.xaxis.set_ticklabels(['Ad', 'Non-ad'])
+    ax.yaxis.set_ticklabels(['Ad', 'Non-ad'])
     plt.show()
+
+    # labels, title and ticks
 
 
 def replace_missing_value(scale=''):
@@ -79,3 +90,13 @@ x_selected = feature_selection_method(X, Y, "SelectKBest")
 X_resampled, y_resampled = rebalancing(X, Y, SMOTE())
 
 classify_by_x_y(X_resampled, y_resampled)
+
+# fig = plt.figure()
+# ax = fig.add_subplot(111)
+# sns.heatmap([[2781, 39], [39, 2781]], annot=True, cmap="YlGnBu")
+# ax.set_xlabel('Predicted labels')
+# ax.set_ylabel('True labels')
+# ax.set_title('Confusion Matrix')
+# ax.xaxis.set_ticklabels(['Ad', 'Non-ad'])
+# ax.yaxis.set_ticklabels(['Ad', 'Non-ad'])
+# plt.show()
